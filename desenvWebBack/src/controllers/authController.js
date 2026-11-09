@@ -1,13 +1,13 @@
-const authService = require("../services/authService");
-function login(req, res) {
-const { email, senha } = req.body;
-if (!email || !senha) {
-return res.status(400).json({ autenticado: false, mensagem: "Informe email e senha" });
-}
-const ok = authService.autenticar(email, senha);
-if (ok) {
-return res.status(200).json({ autenticado: true, token: "token-fake-123" });
-}
-return res.status(401).json({ autenticado: false, mensagem: "Email ou senha inválidos" });
-}
-module.exports = { login };
+module.exports = (auth) => ({
+  async login(req, res, next) {
+    const { email, senha } = req.body || {};
+    if (typeof email !== "string" || typeof senha !== "string" || !email.trim() || !senha || Buffer.byteLength(senha, "utf8") > 72) {
+      return res.status(400).json({ mensagem: "Informe email e senha válidos." });
+    }
+    try {
+      const resultado = await auth.autenticar(email, senha);
+      if (!resultado) return res.status(401).json({ mensagem: "Email ou senha inválidos." });
+      res.json(resultado);
+    } catch (error) { next(error); }
+  },
+});
