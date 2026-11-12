@@ -1,6 +1,4 @@
-# Comandos para rodar o MaterSys
-
-Os blocos abaixo são para PowerShell (terminal do Windows). As linhas com `#` são comentários explicativos. Execute uma etapa de cada vez. É necessário ter Node.js e PostgreSQL instalados.
+# Comandos para rodar o sistema
 
 ## 1. Primeira configuração do banco
 
